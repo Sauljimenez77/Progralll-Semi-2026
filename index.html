@@ -1,129 +1,1592 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python como backend</title>
+
+    <title>Sistema Tributario</title>
 
     <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #263238;
+        }
+
+        .encabezado {
+            background: linear-gradient(135deg, #0b2d4d, #164d7a);
+            color: white;
+            padding: 28px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .encabezado h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .encabezado p {
+            margin: 5px 0 0;
+            color: #dbe8f4;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #123d63;
+            color: white;
+            font-weight: bold;
+            padding: 14px 18px;
+            border: none;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #455a64;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 7px;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #164d7a;
+            box-shadow: 0 0 0 0.15rem rgba(22, 77, 122, 0.15);
+        }
+
+        .btn {
+            border-radius: 7px;
+            font-weight: 500;
+        }
+
+        .btn-principal {
+            background-color: #164d7a;
+            border-color: #164d7a;
+            color: white;
+        }
+
+        .btn-principal:hover {
+            background-color: #0b2d4d;
+            color: white;
+        }
+
+        .resultado {
+            background-color: #f8fafc;
+            border: 1px solid #dde5ec;
+            border-radius: 10px;
+        }
+
+        .resultado-impuesto {
+            background-color: #eaf4ed;
+            border-left: 5px solid #198754;
+            padding: 15px;
+            border-radius: 7px;
+            margin-top: 15px;
+        }
+
+        .resultado-impuesto h3 {
+            color: #157347;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .table thead th {
+            background-color: #e9eef3;
+            color: #263238;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        .titulo-seccion {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .total-historico {
+            background-color: #eef3f7;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+        }
+
+        .pie {
+            text-align: center;
+            color: #78909c;
+            font-size: 13px;
+            padding: 25px 0;
+        }
+
+        @media (max-width: 768px) {
+            .encabezado h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
+<header class="encabezado">
 
-            <!-- Formulario -->
-            <div class="col-6">
-                <div class="container text-center">
+    <div class="container-fluid px-4 px-lg-5">
 
-                    <!-- Código -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input
-                                placeholder="Codigo"
-                                name="txtCodigoCliente"
-                                id="txtCodigoCliente"
-                                class="form-control"
-                                type="text">
+        <h1>Sistema Tributario</h1>
+
+        <p>
+            Administración del Impuesto a las Actividades Económicas
+        </p>
+
+    </div>
+
+</header>
+
+
+<main class="container-fluid px-4 px-lg-5">
+
+    <div class="row g-4">
+
+
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    <span class="titulo-seccion">
+                        Administración de clientes
+                    </span>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <form id="frmCliente">
+
+                        <input
+                            type="hidden"
+                            id="idCliente">
+
+
+                        <div class="row g-3">
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Código
+                                </label>
+
+                                <input
+                                    pattern="^[0-9]{3,10}$"
+                                    required
+                                    placeholder="Ej. 001"
+                                    id="txtCodigoCliente"
+                                    class="form-control"
+                                    type="text">
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Nombre
+                                </label>
+
+                                <input
+                                    pattern="^[A-Za-záéíóúÁÉÍÓÚñÑ ]{3,}$"
+                                    required
+                                    placeholder="Nombre del cliente"
+                                    id="txtNombreCliente"
+                                    class="form-control"
+                                    type="text">
+
+                            </div>
+
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Dirección
+                                </label>
+
+                                <input
+                                    placeholder="Dirección"
+                                    id="txtDireccionCliente"
+                                    class="form-control"
+                                    type="text">
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Teléfono
+                                </label>
+
+                                <input
+                                    pattern="^[0-9]{4}-[0-9]{4}$"
+                                    placeholder="0000-0000"
+                                    id="txtTelefonoCliente"
+                                    class="form-control"
+                                    type="text">
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Correo electrónico
+                                </label>
+
+                                <input
+                                    placeholder="correo@ejemplo.com"
+                                    id="txtEmailCliente"
+                                    class="form-control"
+                                    type="email">
+
+                            </div>
+
+
+                            <div class="col-12">
+
+                                <label class="form-label">
+                                    Tipo de cliente
+                                </label>
+
+                                <select
+                                    class="form-select"
+                                    id="cboTipoPersona">
+
+                                    <option value="particular">
+                                        Particular
+                                    </option>
+
+                                    <option value="empresa">
+                                        Empresa
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-12 pt-2">
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-principal">
+
+                                    Guardar
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    id="btnBuscarCliente"
+                                    class="btn btn-secondary">
+
+                                    Buscar
+
+                                </button>
+
+
+                                <button
+                                    type="reset"
+                                    class="btn btn-outline-secondary">
+
+                                    Limpiar
+
+                                </button>
+
+                            </div>
+
                         </div>
-                    </div>
 
-                    <!-- Nombre -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input
-                                placeholder="Nombre"
-                                name="txtNombreCliente"
-                                id="txtNombreCliente"
-                                class="form-control"
-                                type="text">
-                        </div>
-                    </div>
+                    </form>
 
-                    <!-- Dirección -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input
-                                placeholder="Direccion"
-                                name="txtDireccionCliente"
-                                id="txtDireccionCliente"
-                                class="form-control"
-                                type="text">
-                        </div>
-                    </div>
+                </div>
 
-                    <!-- Teléfono -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input
-                                placeholder="Telefono"
-                                name="txtTelefonoCliente"
-                                id="txtTelefonoCliente"
-                                class="form-control"
-                                type="text">
-                        </div>
-                    </div>
+            </div>
 
-                    <!-- Email -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input
-                                placeholder="Email"
-                                name="txtEmailCliente"
-                                id="txtEmailCliente"
-                                class="form-control"
-                                type="text">
-                        </div>
-                    </div>
 
-                    <!-- Tipo de persona -->
-                    <div class="row mb-2">
-                        <div class="col">
-                            <select
-                                class="form-control"
-                                name="cboTipoPersona"
-                                id="cboTipoPersona">
+            <div class="card shadow-sm mt-4">
 
-                                <option value="particular">Particular</option>
-                                <option value="empresa">Empresa</option>
+                <div class="card-header">
 
-                            </select>
-                        </div>
-                    </div>
+                    <span class="titulo-seccion">
+                        Búsqueda de clientes
+                    </span>
 
-                    <!-- Botones -->
-                    <div class="row mt-3">
-                        <div class="col">
-                            <input
-                                type="button"
-                                value="Guardar"
-                                class="btn btn-primary">
+                </div>
 
-                            <input
-                                type="button"
-                                value="Buscar"
-                                class="btn btn-secondary">
 
-                            <input
-                                type="button"
-                                value="Limpiar"
-                                class="btn btn-warning">
-                        </div>
+                <div class="card-body">
+
+                    <input
+                        type="search"
+                        placeholder="Buscar por código o nombre..."
+                        id="txtBuscarCliente"
+                        class="form-control mb-3">
+
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Acciones</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="tblClientes"></tbody>
+
+                        </table>
+
                     </div>
 
                 </div>
-            </div>
 
-            <!-- Segunda columna -->
-            <div class="col-6">
             </div>
 
         </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    <span class="titulo-seccion">
+                        Registro anual del Impuesto a las Actividades Económicas
+                    </span>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <form id="frmPeriodo">
+
+                        <div class="row g-3">
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Empresa
+                                </label>
+
+                                <select
+                                    id="cboEmpresa"
+                                    class="form-select"
+                                    required>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Producto
+                                </label>
+
+                                <select
+                                    id="cboProducto"
+                                    class="form-select"
+                                    required>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Desde
+                                </label>
+
+                                <input
+                                    id="txtDesde"
+                                    class="form-control"
+                                    type="date"
+                                    required>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Hasta
+                                </label>
+
+                                <input
+                                    id="txtHasta"
+                                    class="form-control"
+                                    type="date"
+                                    required>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label">
+                                    Balance / Activo declarado
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        $
+                                    </span>
+
+                                    <input
+                                        id="txtMonto"
+                                        class="form-control"
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6 d-flex align-items-end">
+
+                                <button
+                                    type="button"
+                                    id="btnCalcular"
+                                    class="btn btn-principal w-100">
+
+                                    Calcular impuesto
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="alertaCalculo"
+                            class="alert mt-3 d-none">
+                        </div>
+
+
+                        <div class="resultado mt-4 p-3">
+
+                            <h6 class="fw-bold mb-3">
+                                Detalle del cálculo
+                            </h6>
+
+
+                            <div class="row g-3">
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Rango aplicado
+                                    </small>
+
+                                    <strong id="detRango">
+                                        -
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Precio base
+                                    </small>
+
+                                    $<strong id="detBase">
+                                        0.00
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Adicional
+                                    </small>
+
+                                    $<strong id="detAdicional">
+                                        0.00
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Excedente
+                                    </small>
+
+                                    $<strong id="detExcedente">
+                                        0.00
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Bloques
+                                    </small>
+
+                                    <strong id="detBloques">
+                                        0
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <small class="text-muted d-block">
+                                        Porcentaje
+                                    </small>
+
+                                    <strong id="detPorcentaje">
+                                        0
+                                    </strong>%
+
+                                </div>
+
+
+                                <div class="col-12">
+
+                                    <small class="text-muted d-block">
+                                        Fórmula aplicada
+                                    </small>
+
+                                    <span id="detFormula">
+                                        -
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="resultado-impuesto">
+
+                                <small class="text-muted">
+                                    Impuesto mensual calculado
+                                </small>
+
+                                <h3>
+                                    $<span id="detPrecio">0.00</span>
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+
+                                Guardar período
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="btnLimpiarPeriodo"
+                                class="btn btn-outline-secondary">
+
+                                Limpiar
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="card shadow-sm mt-4">
+
+                <div class="card-header">
+
+                    <span class="titulo-seccion">
+                        Historial de períodos
+                    </span>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div class="total-historico">
+
+                        <strong>
+                            Total referencial histórico:
+                            $<span id="totalHistorico">0.00</span>
+                        </strong>
+
+                        <br>
+
+                        <small class="text-muted">
+                            Este total es administrativo y no representa
+                            una mensualidad vigente.
+                        </small>
+
+                    </div>
+
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Desde</th>
+                                    <th>Hasta</th>
+                                    <th>Balance</th>
+                                    <th>Precio</th>
+                                    <th>Estado</th>
+                                    <th>Producto</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="tblPeriodos"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-</body>
+</main>
 
+
+<footer class="pie">
+
+    Sistema de Impuestos a las Actividades Económicas
+
+</footer>
+
+
+<script>
+
+let accionCliente = 'nuevo';
+
+let ultimoCalculo = null;
+
+
+const $ = id =>
+    document.getElementById(id);
+
+
+
+$('frmCliente').addEventListener(
+    'submit',
+    async e => {
+
+        e.preventDefault();
+
+
+        const datos = {
+
+            accion:
+                accionCliente,
+
+            idCliente:
+                $('idCliente').value,
+
+            codigo:
+                $('txtCodigoCliente').value,
+
+            nombre:
+                $('txtNombreCliente').value,
+
+            direccion:
+                $('txtDireccionCliente').value,
+
+            telefono:
+                $('txtTelefonoCliente').value,
+
+            email:
+                $('txtEmailCliente').value,
+
+            tipo:
+                $('cboTipoPersona').value
+        };
+
+
+        const response =
+            await fetch('/cliente', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body:
+                    JSON.stringify(datos)
+            });
+
+
+        const respuesta =
+            await response.json();
+
+
+        if (respuesta.msg !== 'ok') {
+
+            alert(respuesta.msg);
+
+            return;
+        }
+
+
+        limpiarCliente();
+
+        await obtenerClientes();
+
+        await cargarEmpresas();
+    }
+);
+
+
+
+$('frmCliente').addEventListener(
+    'reset',
+    e => {
+
+        e.preventDefault();
+
+        limpiarCliente();
+    }
+);
+
+
+
+$('txtBuscarCliente').addEventListener(
+    'keyup',
+    () => {
+
+        obtenerClientes(
+            $('txtBuscarCliente').value
+        );
+    }
+);
+
+
+
+$('btnBuscarCliente').addEventListener(
+    'click',
+    () => {
+
+        obtenerClientes(
+            $('txtBuscarCliente').value
+        );
+    }
+);
+
+
+
+async function obtenerClientes(buscar = '') {
+
+    const response =
+        await fetch(
+            `/clientes?buscar=${encodeURIComponent(buscar)}`
+        );
+
+
+    const datos =
+        await response.json();
+
+
+    let filas = '';
+
+
+    datos.forEach(e => {
+
+        filas += `
+
+            <tr>
+
+                <td>
+                    ${e.codigo}
+                </td>
+
+                <td>
+                    ${e.nombre}
+                </td>
+
+                <td>
+
+                    <span class="badge ${
+                        e.tipo === 'empresa'
+                            ? 'text-bg-primary'
+                            : 'text-bg-secondary'
+                    }">
+
+                        ${e.tipo}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn btn-sm btn-outline-primary"
+                        onclick='editarCliente(${JSON.stringify(e)})'>
+
+                        Editar
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-sm btn-outline-danger"
+                        onclick='eliminarCliente(${JSON.stringify(e)})'>
+
+                        Eliminar
+
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+    });
+
+
+    $('tblClientes').innerHTML =
+        filas;
+}
+
+
+
+function editarCliente(data) {
+
+    accionCliente =
+        'modificar';
+
+
+    $('idCliente').value =
+        data.idCliente;
+
+
+    $('txtCodigoCliente').value =
+        data.codigo;
+
+
+    $('txtNombreCliente').value =
+        data.nombre;
+
+
+    $('txtDireccionCliente').value =
+        data.direccion;
+
+
+    $('txtTelefonoCliente').value =
+        data.telefono;
+
+
+    $('txtEmailCliente').value =
+        data.email;
+
+
+    $('cboTipoPersona').value =
+        data.tipo;
+
+
+    $('frmCliente').scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
+
+
+async function eliminarCliente(data) {
+
+    if (!confirm(
+        `¿Seguro de eliminar al cliente: ${data.nombre}?`
+    )) {
+
+        return;
+    }
+
+
+    const response =
+        await fetch('/cliente', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type':
+                    'application/json'
+            },
+
+            body:
+                JSON.stringify({
+
+                    accion:
+                        'eliminar',
+
+                    idCliente:
+                        data.idCliente
+                })
+        });
+
+
+    const respuesta =
+        await response.json();
+
+
+    if (respuesta.msg !== 'ok') {
+
+        alert(
+            respuesta.msg
+        );
+
+    } else {
+
+        await obtenerClientes();
+
+        await cargarEmpresas();
+    }
+}
+
+
+
+function limpiarCliente() {
+
+    accionCliente =
+        'nuevo';
+
+
+    $('idCliente').value =
+        '';
+
+
+    $('frmCliente').reset();
+}
+
+
+
+async function cargarEmpresas() {
+
+    const empresaActual =
+        $('cboEmpresa').value;
+
+
+    const response =
+        await fetch(
+            '/clientes/empresas'
+        );
+
+
+    const datos =
+        await response.json();
+
+
+    $('cboEmpresa').innerHTML =
+        '<option value="">Seleccione una empresa</option>' +
+
+        datos.map(e =>
+
+            `<option value="${e.idCliente}">
+                ${e.codigo} - ${e.nombre}
+            </option>`
+
+        ).join('');
+
+
+    if (empresaActual) {
+
+        $('cboEmpresa').value =
+            empresaActual;
+    }
+
+
+    await cargarPeriodos();
+}
+
+
+
+async function cargarProductos() {
+
+    const response =
+        await fetch(
+            '/productos'
+        );
+
+
+    const datos =
+        await response.json();
+
+
+    $('cboProducto').innerHTML =
+        '<option value="">Seleccione un producto</option>' +
+
+        datos.map(e =>
+
+            `<option value="${e.idProducto}">
+                ${e.codigo} - ${e.nombre}
+            </option>`
+
+        ).join('');
+}
+
+
+
+$('cboEmpresa').addEventListener(
+    'change',
+    cargarPeriodos
+);
+
+
+
+$('cboProducto').addEventListener(
+    'change',
+    calcularSiHayDatos
+);
+
+
+
+$('txtDesde').addEventListener(
+    'change',
+    calcularSiHayDatos
+);
+
+
+
+$('txtHasta').addEventListener(
+    'change',
+    calcularSiHayDatos
+);
+
+
+
+$('txtMonto').addEventListener(
+    'input',
+    calcularSiHayDatos
+);
+
+
+
+$('btnCalcular').addEventListener(
+    'click',
+    calcularImpuesto
+);
+
+
+
+$('btnLimpiarPeriodo').addEventListener(
+    'click',
+    limpiarPeriodo
+);
+
+
+
+async function calcularSiHayDatos() {
+
+    if (
+        $('cboEmpresa').value &&
+        $('cboProducto').value &&
+        $('txtDesde').value &&
+        $('txtHasta').value &&
+        $('txtMonto').value
+    ) {
+
+        await calcularImpuesto();
+    }
+}
+
+
+
+async function calcularImpuesto() {
+
+    const datos = {
+
+        idCliente:
+            $('cboEmpresa').value,
+
+        idProducto:
+            $('cboProducto').value,
+
+        desde:
+            $('txtDesde').value,
+
+        hasta:
+            $('txtHasta').value,
+
+        monto:
+            $('txtMonto').value
+    };
+
+
+    const response =
+        await fetch(
+            '/periodo/calcular',
+            {
+
+                method:
+                    'POST',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body:
+                    JSON.stringify(datos)
+            }
+        );
+
+
+    const respuesta =
+        await response.json();
+
+
+    const alerta =
+        $('alertaCalculo');
+
+
+    if (!respuesta.ok) {
+
+        ultimoCalculo =
+            null;
+
+
+        alerta.className =
+            'alert alert-danger mt-3';
+
+
+        alerta.textContent =
+            respuesta.msg;
+
+
+        limpiarDetalle();
+
+
+        return false;
+    }
+
+
+    ultimoCalculo =
+        respuesta;
+
+
+    alerta.className =
+        'alert alert-success mt-3';
+
+
+    alerta.textContent =
+        'Cálculo realizado correctamente. Revise el detalle antes de guardar.';
+
+
+    $('detRango').textContent =
+        `$${respuesta.tarifa.desde} - $${respuesta.tarifa.hasta}`;
+
+
+    $('detBase').textContent =
+        Number(
+            respuesta.tarifa.precioBase
+        ).toFixed(2);
+
+
+    $('detAdicional').textContent =
+        Number(
+            respuesta.tarifa.adicional
+        ).toFixed(2);
+
+
+    $('detExcedente').textContent =
+        Number(
+            respuesta.excedente
+        ).toFixed(2);
+
+
+    $('detBloques').textContent =
+        Number(
+            respuesta.bloques
+        ).toFixed(0);
+
+
+    $('detPorcentaje').textContent =
+        Number(
+            respuesta.tarifa.porcentaje
+        ).toFixed(2);
+
+
+    $('detFormula').textContent =
+        respuesta.formula;
+
+
+    $('detPrecio').textContent =
+        Number(
+            respuesta.precio
+        ).toFixed(2);
+
+
+    return true;
+}
+
+
+
+$('frmPeriodo').addEventListener(
+    'submit',
+    async e => {
+
+        e.preventDefault();
+
+
+        if (!ultimoCalculo) {
+
+            const correcto =
+                await calcularImpuesto();
+
+
+            if (!correcto) {
+
+                return;
+            }
+        }
+
+
+        if (!confirm(
+
+            `El impuesto mensual calculado es $${Number(
+                ultimoCalculo.precio
+            ).toFixed(2)}. ¿Desea guardar el período?`
+
+        )) {
+
+            return;
+        }
+
+
+        const empresaSeleccionada =
+            $('cboEmpresa').value;
+
+
+        const datos = {
+
+            accion:
+                'nuevo',
+
+            idCliente:
+                empresaSeleccionada,
+
+            idProducto:
+                $('cboProducto').value,
+
+            desde:
+                $('txtDesde').value,
+
+            hasta:
+                $('txtHasta').value,
+
+            monto:
+                $('txtMonto').value,
+
+            usuario:
+                'sistema'
+        };
+
+
+        const response =
+            await fetch(
+                '/periodo',
+                {
+
+                    method:
+                        'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body:
+                        JSON.stringify(datos)
+                }
+            );
+
+
+        const respuesta =
+            await response.json();
+
+
+        if (respuesta.msg !== 'ok') {
+
+            alert(
+                respuesta.msg
+            );
+
+            return;
+        }
+
+
+        alert(
+            'Período guardado correctamente.'
+        );
+
+
+        limpiarPeriodo();
+
+
+        $('cboEmpresa').value =
+            empresaSeleccionada;
+
+
+        await cargarPeriodos();
+    }
+);
+
+
+
+async function cargarPeriodos() {
+
+    const idCliente =
+        $('cboEmpresa').value;
+
+
+    if (!idCliente) {
+
+        $('tblPeriodos').innerHTML =
+            '';
+
+
+        $('totalHistorico').textContent =
+            '0.00';
+
+
+        return;
+    }
+
+
+    const response =
+        await fetch(
+            `/periodos?idCliente=${idCliente}`
+        );
+
+
+    const datos =
+        await response.json();
+
+
+    let filas =
+        '';
+
+
+    let total =
+        0;
+
+
+    datos.forEach(e => {
+
+        total +=
+            Number(e.precio);
+
+
+        filas += `
+
+            <tr>
+
+                <td>
+                    ${e.desde}
+                </td>
+
+                <td>
+                    ${e.hasta}
+                </td>
+
+                <td>
+                    $${Number(
+                        e.monto
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+
+                    <strong>
+                        $${Number(
+                            e.precio
+                        ).toFixed(2)}
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    <span class="badge ${
+                        e.estado === 'vigente'
+                            ? 'text-bg-success'
+                            : 'text-bg-secondary'
+                    }">
+
+                        ${e.estado}
+
+                    </span>
+
+                </td>
+
+                <td>
+                    ${e.codigoProducto}
+                </td>
+
+            </tr>
+        `;
+    });
+
+
+    $('tblPeriodos').innerHTML =
+        filas;
+
+
+    $('totalHistorico').textContent =
+        total.toFixed(2);
+}
+
+
+
+function limpiarDetalle() {
+
+    $('detRango').textContent =
+        '-';
+
+
+    $('detBase').textContent =
+        '0.00';
+
+
+    $('detAdicional').textContent =
+        '0.00';
+
+
+    $('detExcedente').textContent =
+        '0.00';
+
+
+    $('detBloques').textContent =
+        '0';
+
+
+    $('detPorcentaje').textContent =
+        '0';
+
+
+    $('detFormula').textContent =
+        '-';
+
+
+    $('detPrecio').textContent =
+        '0.00';
+}
+
+
+
+function limpiarPeriodo() {
+
+    $('frmPeriodo').reset();
+
+
+    ultimoCalculo =
+        null;
+
+
+    $('alertaCalculo').className =
+        'alert mt-3 d-none';
+
+
+    limpiarDetalle();
+}
+
+
+
+document.addEventListener(
+    'DOMContentLoaded',
+    async () => {
+
+        await obtenerClientes();
+
+        await cargarEmpresas();
+
+        await cargarProductos();
+    }
+);
+
+</script>
+
+</body>
 </html>
